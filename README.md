@@ -3,7 +3,7 @@
 ### Auto Annotation
 検出モデルでの推論とPascalVoc形式で結果の保存を行う。
 labelimgでそのまま使用可能。
-Tensorflow Object Detection APIで作成したモデルの使用を想定。
+Tensorflow Object Detection APIで作成したモデルを./exported_graphs/frozen_inference_graph.pbに保存されていることを想定。
 ```
 python detection_and_toxml.py \
     --input_dir=input/img \
