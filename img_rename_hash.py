@@ -11,11 +11,10 @@ import imagehash
 
 
 def rename_hash(file):
-    output_dir = ""
     try:
         filename = os.path.splitext(os.path.basename(file))
-        data = imagehash.whash(Image.open(file))
-        path = os.path.join(output_dir, str(data)+filename[1])
+        data = imagehash.phash(Image.open(file))
+        path = os.path.join(os.path.dirname(file), str(data)+filename[1])
         move(file, path)
     except:
         None

@@ -12,7 +12,7 @@ python detection_and_toxml.py `
 labelimgのOpen Dirでinput_dirを指定し、Change Save Dirでoutput_dirを指定すれば自動アノテーション結果が確認できる。
 
 ### Hash Rename
-画像をwhash値にリネームする。
+画像をphash値にリネームする。input_dir内の画像名が上書きされるので注意。
 ```
 python img_rename_hash.py `
     --input_dir=input/img
