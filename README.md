@@ -6,8 +6,8 @@ labelimgでそのまま使用可能。
 Tensorflow Object Detection APIで作成したモデルを./exported_graphs/frozen_inference_graph.pbに保存されていることを想定。
 ```
 python detection_and_toxml.py ^
-    --input_dir=C:/Users/254223/Desktop/img ^
-    --output_dir=C:/Users/254223/Desktop/xml
+    --input_dir=png_dir ^
+    --output_dir=xml_dir
 ```
 labelimgのOpen Dirでinput_dirを指定し、Change Save Dirでoutput_dirを指定すれば自動アノテーション結果が確認できる。
 
@@ -22,7 +22,7 @@ python img_rename_hash.py \
 画像を白黒反転し対応するラベルも反転し保存する。白黒予測特化。
 ```
 python bitwise_not_augument.py ^
-    --img_input_dir=C:/Users/254223/Desktop/img ^
-    --xml_input_dir=C:/Users/254223/Desktop/xml ^
-    --output_dir=C:/Users/254223/Desktop/out 
+    --img_input_dir=png_dir ^
+    --xml_input_dir=xml_dir ^
+    --output_dir=out_dir
 ```
