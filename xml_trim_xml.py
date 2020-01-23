@@ -30,85 +30,32 @@ for xmlpath in tqdm(xml_paths):
         xmax = int(float(objects[idx][3]))-1
         ymax = int(float(objects[idx][4]))-1
 
-        # left line
-        prev_cnt = 1000000
         while True:
-            if xmin == xmax - 1:
+            line_sum = []
+            # left line
+            line_sum.append(np.sum(tmp[ymin:ymax, xmin]))
+            # up line
+            line_sum.append(np.sum(tmp[ymin, xmin:xmax]))
+            # right line
+            line_sum.append(np.sum(tmp[ymin:ymax, xmax]))
+            # down line
+            line_sum.append(np.sum(tmp[ymax, xmin:xmax]))
+            line_sum = np.array(line_sum)
+            if np.max(line_sum) == 0:
                 break
-            flg = True
-            cnt = 0
-            for i in range(ymin, ymax):
-                if tmp[i, xmin] == 1:
-                    flg = False
-                    cnt += 1
-            if flg:
-                break
-            else:
-                if cnt == prev_cnt:
-                    break
-                else:
-                    prev_cnt = cnt
-                    xmin += 1
-
-        # up line
-        prev_cnt = 1000000
-        while True:
-            if ymin == ymax - 1:
-                break
-            flg = True
-            cnt = 0
-            for i in range(xmin, xmax):
-                if tmp[ymin, i] == 1:
-                    flg = False
-                    cnt += 1
-            if flg:
-                break
-            else:
-                if cnt == prev_cnt:
-                    break
-                else:
-                    prev_cnt = cnt
-                    ymin += 1
-
-        # right line
-        prev_cnt = 1000000
-        while True:
-            if xmax == xmin + 1:
-                break
-            flg = True
-            cnt = 0
-            for i in range(ymin, ymax):
-                if tmp[i, xmax] == 1:
-                    flg = False
-                    cnt += 1
-            if flg:
-                break
-            else:
-                if cnt == prev_cnt:
-                    break
-                else:
-                    prev_cnt = cnt
-                    xmax -= 1
-
-        # down line
-        prev_cnt = 1000000
-        while True:
-            if ymax == ymin + 1:
-                break
-            flg = True
-            cnt = 0
-            for i in range(xmin, xmax):
-                if tmp[ymax, i] == 1:
-                    flg = False
-                    cnt += 1
-            if flg:
-                break
-            else:
-                if cnt == prev_cnt:
-                    break
-                else:
-                    prev_cnt = cnt
-                    ymax -= 1
+            max_id = np.argmax(line_sum)
+            if max_id == 0:
+                # left line
+                xmin += 1
+            elif max_id == 1:
+                # up line
+                ymin += 1
+            elif max_id == 2:
+                # right line
+                xmax -= 1
+            elif max_id == 3:
+                # down line
+                ymax -= 1
 
         tmp[ymin:ymax, xmin:xmax] = 1
         objects[idx][1] = xmin
