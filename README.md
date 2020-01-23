@@ -15,7 +15,7 @@ labelimgのOpen Dirでinput_dirを指定し、Change Save Dirでoutput_dirを指
 画像をphash値にリネームする。input_dir内の画像名が上書きされるので注意。
 ```
 python img_rename_hash.py `
-    --input_dir=input/img
+    --input_dir=png_dir
 ```
 
 ### Augument
@@ -25,4 +25,11 @@ python bitwise_not_augument.py `
     --img_input_dir=png_dir `
     --xml_input_dir=xml_dir `
     --output_dir=out_dir
+```
+
+### Trim Bndbox
+xmlファイルからオブジェクト情報をロードしバウンディングボックスの重なりを無くし上書き保存。
+```
+python xml_trim_xml.py `
+    --xml_dir=xml_dir
 ```

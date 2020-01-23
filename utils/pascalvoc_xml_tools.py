@@ -6,10 +6,11 @@ import codecs
 import os
 from xml.dom import minidom
 
+
 def create_xmldoc(folder, filename, path, height, width, depth, objects):
     """xmlファイルを作成する
     pascalvoc形式に合うようにxmlファイルを作成する
-    
+
     Arguments:
         folder -- 画像があるフォルダ名
         filename -- 画像のファイル名
@@ -20,7 +21,7 @@ def create_xmldoc(folder, filename, path, height, width, depth, objects):
         objects -- 物体のリスト
     Examples:
         objects = [label,xmin,ymin,xmax,ymax]]
-    
+
     Returns:
         doc -- minidom.Document
     """
@@ -133,16 +134,61 @@ def create_xmldoc(folder, filename, path, height, width, depth, objects):
 
 def save_xmldoc(xmldoc, filepath):
     """save xml
-    
+
     Arguments:
         xmldoc -- minidom.Document
         filepath  -- xml save path
     """
     # Text encoding
-    f = codecs.open(filepath, 'wb', encoding='utf-8')  
+    f = codecs.open(filepath, 'wb', encoding='utf-8')
     # XML header's encoding
     xmldoc.writexml(f, '', ' '*4, '\n', encoding='UTF-8')
     f.close()
+
+
+def read_xmldoc(filepath):
+    """read pascal-voc-style .xml
+
+    Args:
+        filepath : xml path
+    Returns:
+        out: list
+    """
+    out = []
+    doc = minidom.parse(filepath)
+    folder = doc.getElementsByTagName("folder")[0].firstChild.nodeValue
+    filename = doc.getElementsByTagName("filename")[0].firstChild.nodeValue
+    path = doc.getElementsByTagName("path")[0].firstChild.nodeValue
+    out.append(folder)
+    out.append(filename)
+    out.append(path)
+
+    size = doc.getElementsByTagName("size")[0]
+    height = size.getElementsByTagName("height")[0].firstChild.nodeValue
+    width = size.getElementsByTagName("width")[0].firstChild.nodeValue
+    depth = size.getElementsByTagName("depth")[0].firstChild.nodeValue
+    out.append(height)
+    out.append(width)
+    out.append(depth)
+
+    object_list = []
+    objects = doc.getElementsByTagName("object")
+    for obj in objects:
+        obj_info = []
+        name = obj.getElementsByTagName("name")[0].firstChild.nodeValue
+        bndbox = obj.getElementsByTagName("bndbox")[0]
+        xmin = bndbox.getElementsByTagName("xmin")[0].firstChild.nodeValue
+        ymin = bndbox.getElementsByTagName("ymin")[0].firstChild.nodeValue
+        xmax = bndbox.getElementsByTagName("xmax")[0].firstChild.nodeValue
+        ymax = bndbox.getElementsByTagName("ymax")[0].firstChild.nodeValue
+        obj_info.append(name)
+        obj_info.append(xmin)
+        obj_info.append(ymin)
+        obj_info.append(xmax)
+        obj_info.append(ymax)
+        object_list.append(obj_info)
+    out.append(object_list)
+    return out
 
 
 if __name__ == '__main__':
@@ -155,18 +201,21 @@ if __name__ == '__main__':
     objects = [
         [
             "ball",
-            175,
-            422,
-            221,
-            468
+            100,
+            100,
+            300,
+            300
         ],
         [
             "ball",
-            267,
-            432,
-            306,
-            475
+            200,
+            200,
+            400,
+            400
         ]
     ]
     doc = create_xmldoc(folder, filename, path, height, width, depth, objects)
     save_xmldoc(doc, os.path.splitext(filename)[0] + '.xml')
+
+    xml = read_xmldoc(os.path.splitext(filename)[0] + '.xml')
+    print(xml)

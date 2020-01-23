@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
-from utils.create_pascalvoc_xml import create_xmldoc, save_xmldoc
+from utils.pascalvoc_xml_tools import create_xmldoc, save_xmldoc
 from utils.detection import DetectionModel_PB, inference_tta
 from utils.detection_tools import non_max_suppression, overlay_result
 
