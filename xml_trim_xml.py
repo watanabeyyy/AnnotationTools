@@ -25,10 +25,10 @@ for xmlpath in tqdm(xml_paths):
     tmp = np.zeros((height, width))
     for idx in range(len(objects)):
         label = objects[idx][0]
-        xmin = int(float(objects[idx][1]))+1
-        ymin = int(float(objects[idx][2]))+1
-        xmax = int(float(objects[idx][3]))-1
-        ymax = int(float(objects[idx][4]))-1
+        xmin = max([0, int(float(objects[idx][1]))])
+        ymin = max([0, int(float(objects[idx][2]))])
+        xmax = min([int(float(objects[idx][3])), width - 1])
+        ymax = min([int(float(objects[idx][4])), height - 1])
 
         while True:
             line_sum = []
